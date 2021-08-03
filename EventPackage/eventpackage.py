@@ -15,10 +15,12 @@ class DatetimeEventStore():
             self.dbcursor = self.dbconnection.cursor()
         except IOError:
             print("\"eventdb.db\" doesn't exist.")
+            exit(-1)
 
     def store_event(self, at, data):
         if (at == None or data == None):
             print("One or two of the parameters is null / Datetime format isn't good")
+            exit(-1)
         args = (at, data)
         try :
             self.dbcursor.execute("INSERT INTO event (date,data) VALUES (?, ?)", args)
@@ -29,6 +31,7 @@ class DatetimeEventStore():
     def get_events(self, start, end):
         if (start == None or end == None):
             print("One or two of the parameters is null / Datetime format isn't good")
+            exit(-1)
         args = (start, end)
         try:
             self.dbcursor.execute("SELECT * FROM event WHERE date >= ? AND date <= ?", args)
