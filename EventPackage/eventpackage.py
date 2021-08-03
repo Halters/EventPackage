@@ -21,6 +21,12 @@ class DatetimeEventStore():
         if (at == None or data == None or type(at != datetime)):
             print("One or two of the parameters is null / Datetime format isn't good")
         dateStr = at.strftime("%d-%b-%Y")
-        print(dateStr)
-        print(data)
+        args = (dateStr, data)
+        try :
+            print("1")
+            self.dbcursor.execute("INSERT INTO event (data,date) VALUES (?, ?)", args)
+            self.dbconnection.commit()
+            print("2")
+        except Error as e:
+            print(e)
         
