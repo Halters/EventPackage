@@ -17,16 +17,22 @@ class DatetimeEventStore():
             print("\"eventdb.db\" doesn't exist.")
 
     def store_event(self, at, data):
-        dateStr = None
-        if (at == None or data == None or type(at != datetime)):
+        if (at == None or data == None):
             print("One or two of the parameters is null / Datetime format isn't good")
-        dateStr = at.strftime("%d-%b-%Y")
-        args = (dateStr, data)
+        args = (at, data)
         try :
-            print("1")
-            self.dbcursor.execute("INSERT INTO event (data,date) VALUES (?, ?)", args)
+            self.dbcursor.execute("INSERT INTO event (date,data) VALUES (?, ?)", args)
             self.dbconnection.commit()
-            print("2")
+        except Error as e:
+            print (e)
+
+    def get_events(self, start, end):
+        if (start == None or end == None):
+            print("One or two of the parameters is null / Datetime format isn't good")
+        args = (start, end)
+        try:
+            self.dbcursor.execute("SELECT * FROM event WHERE date >= ? AND date <= ?", args)
+            result = self.dbcursor.fetchall()
+            return (result)
         except Error as e:
             print(e)
-        
